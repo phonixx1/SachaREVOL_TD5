@@ -1,26 +1,105 @@
 
 
 class Book:
-    def __init__(name):
+    def __init__(self,name):
         self.name=name
         self.idOrder=1
-        self.listOfOrders=[]
+        self.listOfOrders=[[],[]]
 
-    def insert_buy(number,price):
-        listOfOrders.append(Order(self.idOrder,"BUY",number,price))
-        self.Order+=1
+    def insert_buy(self,number,price):
+        print("--- Insert BUY "+ str(number)+"@"+str(price)+" id="+str(self.idOrder)+" on "+str(self.name))
+        newOrder=Order(self.idOrder,"BUY",number,price)
+        self.idOrder+=1
+        newOrder=self.tryExecute(newOrder,self.listOfOrders[1])
+        if(newOrder!=None):
+            if(len(self.listOfOrders[0])!=0):
+                indexList=[self.listOfOrders[0].index(x) if x.price>=newOrder.price else -1 for x in self.listOfOrders[0]]
+                self.listOfOrders[0].insert((max(indexList)+1),newOrder)
+            else:
+                self.listOfOrders[0].append(newOrder)
+        
+        self.displayBook()
 
-    def insert_sell(number,price):
-        listOfOrders.append(Order(self.idOrder,"SELL",number,price))
-        self.Order+=1
-
-    def displayBook():
-        return 0
-
+    def insert_sell(self,number,price):
+        print("--- Insert SELL "+ str(number)+"@"+str(price)+" id="+str(self.idOrder)+" on "+str(self.name))
+        newOrder=Order(self.idOrder,"SELL",number,price)
+        self.idOrder+=1
+        newOrder=self.tryExecute(newOrder,self.listOfOrders[0])
+        if(newOrder!=None):
+            if(len(self.listOfOrders[1])!=0):
+                indexList=[self.listOfOrders[1].index(x) if x.price<=newOrder.price else -1 for x in self.listOfOrders[0]]
+                self.listOfOrders[1].insert((max(indexList)+1),newOrder)
+            else:
+                self.listOfOrders[1].append(newOrder)
     
+        self.displayBook()
+
+    def displayBook(self):
+        print("Book on " +str(self.name))
+        for i in range(len(self.listOfOrders[1])-1,-1,-1):
+            print("\t"+str(self.listOfOrders[1][i].type)+" "+str(self.listOfOrders[1][i].number)+"@"+str(self.listOfOrders[1][i].price)+" id="+str(self.listOfOrders[1][i].id))
+        for i in range(len(self.listOfOrders[0])):
+            print("\t"+str(self.listOfOrders[0][i].type)+" "+str(self.listOfOrders[0][i].number)+"@"+str(self.listOfOrders[0][i].price)+" id="+str(self.listOfOrders[0][i].id)) 
+        print("------------------------------")
+
+        
+
+    def tryExecute(self,order,listOfOrders):
+        if(len(listOfOrders)!=0):
+            if(order.type=="BUY"):
+                if (order.price >= listOfOrders[0].price):
+                    i=0
+                    while(order.price>= listOfOrders[i].price):
+                        if(order.number< listOfOrders[i].number):
+                            listOfOrders[i].number-=order.number
+                            print("Execute "+str(order.number) + " at "+str(listOfOrders[i].price)+" on " +str(self.name))
+                            order.number=0
+                            break
+                        elif(order.number >= listOfOrders[i].number):
+                            print("Execute "+str(listOfOrders[i].number) + " at "+str(listOfOrders[i].price)+" on " +str(self.name))
+                            order.number-=listOfOrders[i].number
+                            listOfOrders.pop(i)
+                    if(order.number==0):
+                        toReturn=None
+                    elif(order.number>0):
+                        toReturn=order
+                    else:
+                        print("Erreur")
+
+                else:
+                    toReturn=order
+
+            elif(order.type=="SELL"):
+                if (order.price <= listOfOrders[0].price):
+                    i=0
+                    while(order.price<= listOfOrders[i].price):
+                        if(order.number< listOfOrders[i].number):
+                            listOfOrders[i].number-=order.number
+                            print("Execute "+str(order.number) + " at "+str(listOfOrders[i].price)+" on " +str(self.name))
+                            order.number=0
+                            break
+                        elif(order.number >= listOfOrders[i].number):
+                            print("Execute "+str(listOfOrders[i].number) + " at "+str(listOfOrders[i].price)+" on " +str(self.name))
+                            order.number-=listOfOrders[i].number
+                            listOfOrders.pop(i)
+                    if(order.number==0):
+                        toReturn=None
+                    elif(order.number>0):
+                        toReturn=order
+                    else:
+                        print("Erreur SELL")
+                else:
+                    toReturn=order
+        else:
+            toReturn=order
+
+        return toReturn
+
+                        
 class Order:
-    def __init__(id,type,number,price):
-        self.id=id
+    def __init__(self,idOrder,typeOrder,number,price):
+        self.id=idOrder
+        self.type=typeOrder
         self.number=number
         self.price=price
 
