@@ -1,5 +1,3 @@
-
-
 class Book:
     def __init__(self,name):
         self.name=name
@@ -43,45 +41,40 @@ class Book:
         print("------------------------------")
 
         
-
     def tryExecute(self,order,listOfOrders):
         if(len(listOfOrders)!=0):
             if(order.type=="BUY"):
                 if (order.price >= listOfOrders[0].price):
-                    i=0
-                    while(order.price>= listOfOrders[i].price):
-                        if(order.number< listOfOrders[i].number):
-                            listOfOrders[i].number-=order.number
-                            print("Execute "+str(order.number) + " at "+str(listOfOrders[i].price)+" on " +str(self.name))
+                    while(order.price>= listOfOrders[0].price):
+                        if(order.number< listOfOrders[0].number):
+                            listOfOrders[0].number-=order.number
+                            print("Execute "+str(order.number) + " at "+str(listOfOrders[0].price)+" on " +str(self.name))
                             order.number=0
                             break
-                        elif(order.number >= listOfOrders[i].number):
-                            print("Execute "+str(listOfOrders[i].number) + " at "+str(listOfOrders[i].price)+" on " +str(self.name))
-                            order.number-=listOfOrders[i].number
-                            listOfOrders.pop(i)
+                        elif(order.number >= listOfOrders[0].number):
+                            print("Execute "+str(listOfOrders[0].number) + " at "+str(listOfOrders[0].price)+" on " +str(self.name))
+                            order.number-=listOfOrders[0].number
+                            listOfOrders.pop(0)
                     if(order.number==0):
                         toReturn=None
                     elif(order.number>0):
                         toReturn=order
                     else:
                         print("Erreur")
-
                 else:
                     toReturn=order
-
             elif(order.type=="SELL"):
                 if (order.price <= listOfOrders[0].price):
-                    i=0
-                    while(order.price<= listOfOrders[i].price):
-                        if(order.number< listOfOrders[i].number):
-                            listOfOrders[i].number-=order.number
-                            print("Execute "+str(order.number) + " at "+str(listOfOrders[i].price)+" on " +str(self.name))
+                    while(order.price<= listOfOrders[0].price):
+                        if(order.number< listOfOrders[0].number):
+                            listOfOrders[0].number-=order.number
+                            print("Execute "+str(order.number) + " at "+str(listOfOrders[0].price)+" on " +str(self.name))
                             order.number=0
                             break
-                        elif(order.number >= listOfOrders[i].number):
-                            print("Execute "+str(listOfOrders[i].number) + " at "+str(listOfOrders[i].price)+" on " +str(self.name))
-                            order.number-=listOfOrders[i].number
-                            listOfOrders.pop(i)
+                        elif(order.number >= listOfOrders[0].number):
+                            print("Execute "+str(listOfOrders[0].number) + " at "+str(listOfOrders[0].price)+" on " +str(self.name))
+                            order.number-=listOfOrders[0].number
+                            listOfOrders.pop(0)
                     if(order.number==0):
                         toReturn=None
                     elif(order.number>0):
