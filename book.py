@@ -1,3 +1,5 @@
+import pandas as pd
+
 class Book:
     def __init__(self,name):
         self.name=name
@@ -33,12 +35,22 @@ class Book:
         self.displayBook()
 
     def displayBook(self):
+        if(len(self.listOfOrders[1]) !=0):
+            dfSell=pd.DataFrame.from_records([x.to_dict() for x in self.listOfOrders[1]],index=[i.id for i in self.listOfOrders[1]])
+            print(dfSell)
+            print()
+        if(len(self.listOfOrders[0]) !=0): 
+            dfBuy=pd.DataFrame.from_records([x.to_dict() for x in self.listOfOrders[0]],index=[i.id for i in self.listOfOrders[0]])
+            print(dfBuy)
+            print()
+        '''
         print("Book on " +str(self.name))
         for i in range(len(self.listOfOrders[1])-1,-1,-1):
             print("\t"+str(self.listOfOrders[1][i].type)+" "+str(self.listOfOrders[1][i].number)+"@"+str(self.listOfOrders[1][i].price)+" id="+str(self.listOfOrders[1][i].id))
         for i in range(len(self.listOfOrders[0])):
             print("\t"+str(self.listOfOrders[0][i].type)+" "+str(self.listOfOrders[0][i].number)+"@"+str(self.listOfOrders[0][i].price)+" id="+str(self.listOfOrders[0][i].id)) 
         print("------------------------------")
+        '''
 
         
     def tryExecute(self,order,listOfOrders):
@@ -95,4 +107,9 @@ class Order:
         self.type=typeOrder
         self.number=number
         self.price=price
-
+    def to_dict(self):
+        return {
+                'Type': self.type,
+                'Number':self.number,
+                'Price': self.price,
+                 }
