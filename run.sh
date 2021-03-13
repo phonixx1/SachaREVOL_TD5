@@ -6,7 +6,7 @@ then
 	echo Package venv well installed
 	echo
 else
-	echo First install virtualenv -> "sudo pip3 install virtualenv "
+	echo First install virtualenv : "sudo pip3 install virtualenv "
 	exit 1
 fi
 
